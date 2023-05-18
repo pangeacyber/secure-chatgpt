@@ -1,0 +1,41 @@
+{
+  "name": "create-secure-chatgpt-app",
+  "version": "0.0.1",
+  "description": "Create Pangea-powered secure OpenAI apps with a single command",
+  "keywords": [
+    "secure",
+    "pangea",
+    "chatgpt",
+    "openAI",
+    "redact",
+    "audit",
+    "threatintel"
+  ],
+  "author": "Pangea",
+  "license": "MIT",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pangeacyber/secure-chatgpt",
+    "directory": "packages/create-secure-chatgpt-app"
+  },
+  "bugs": {
+    "url": "https://github.com/pangeacyber/secure-chatgpt/issues"
+  },
+  "homepage": "https://github.com/pangeacyber/secure-chatgpt#readme",
+  "bin": {
+    "create-secure-chatgpt-app": "./index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines": {
+    "node": ">=16.8.0"
+  },
+  "devDependencies": {
+    "chalk": "^5.2.0",
+    "commander": "^10.0.1",
+    "prompts": "^2.4.2",
+    "validate-npm-package-name": "^5.0.0"
+  }
+}

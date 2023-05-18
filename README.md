@@ -5,7 +5,7 @@ The goal of this boilerplate is to show how developers can use Pangea's various 
 We are using the following Pangea services:
 
 - Redact Service: To redact sensitive information from the user's prompt before the entry reaches to OpenAI API
-- Audit Serivce: To audit the user prompts
+- Audit Service: To audit the user prompts
 - Reputation/Threat Intel services: To detect and neutralize the malicious URLs and domain names in the OPENAI API's responses. 
 
 ## Just add water
