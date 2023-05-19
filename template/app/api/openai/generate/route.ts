@@ -71,6 +71,7 @@ const handler = async (req: NextRequestWithAuth) => {
         actor: actor,
         message: processedPrompt,
         source: "pangea-secure-chatgpt",
+        target: "text-davinci-003",
       };
 
       await audit.log(auditData);
