@@ -139,6 +139,7 @@ button {
   padding: 0.8em;
   border-radius: 0.2em;
   line-height: 1em;
+  cursor: pointer;
 }
 
 @media (prefers-color-scheme: dark) {

@@ -91,7 +91,8 @@ export function isPathAvailable(root, name) {
 export const getUserInput = async (
   question,
   defaultValue,
-  validateFunction
+  validateFunction,
+  style = "default"
 ) => {
   const res = await prompts({
     onState: onPromptState,
@@ -100,6 +101,7 @@ export const getUserInput = async (
     message: question,
     initial: defaultValue,
     validate: validateFunction,
+    style: style,
   });
 
   if (typeof res.userInput === "string") {
