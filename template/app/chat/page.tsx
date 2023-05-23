@@ -1,43 +1,94 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
-import BeatLoader from "react-spinners/BeatLoader";
 import styles from "../page.module.css";
 import { useAuth } from "@pangeacyber/react-auth";
 import pageWithAuthentication from "../../components/pageWithAuthentication";
+import MessageRow from "../../components/MessageRow";
+
+const initialState = {
+  prompt: "",
+  loading: false,
+  messages: [],
+};
 
 const Chat = () => {
   const { getToken, user } = useAuth();
-  const [prompt, setPrompt] = useState("");
-  const [messages, setMessages] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [localState, setLocalState] = useState(initialState);
+
+  const messagesEndRef = useRef(null);
 
   const token = getToken();
 
+  // Append the list with the given message
+  const addToMessages = (message) => {
+    setLocalState((prev) => ({
+      ...prev,
+      messages: [...prev.messages, message],
+    }));
+  };
+
+  // Update the message with the given ID with the given content
+  const updateMessagePrompt = (messageID, newPrompt) => {
+    setLocalState((prev) => ({
+      ...prev,
+      messages: prev.messages.map((m) => {
+        if (m.id === messageID) {
+          return {
+            ...m,
+            message: newPrompt,
+          };
+        }
+        return m;
+      }),
+    }));
+  };
+
+  const processResponse = (data) => {
+    updateMessagePrompt(data?.prompt_id, data?.prompt);
+    addToMessages({
+      id: uuidv4(),
+      user: "System",
+      message: data?.result,
+      maliciousURLs: data?.maliciousURLs,
+    });
+  };
+
+  const submitData = async (msg) => {
+    return await fetch("/api/openai/generate", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ prompt: msg.prompt, prompt_id: msg.id }),
+    });
+  };
+
   const handleKeyDown = async (e) => {
-    if (e.key === "Enter") {
+    if (e.key === "Enter" && !localState.loading) {
       e.preventDefault();
       try {
-        setMessages((prev) => [
-          ...prev,
-          {
-            id: uuidv4(),
-            user: user?.profile?.first_name || "User",
-            message: prompt,
-          },
-        ]);
-        setPrompt("");
-        setLoading(true);
-        const response = await fetch("/api/openai/generate", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ prompt }),
+        // Omitting message here so we show a loading ellipsis
+        // When we receive the response, we will populate the message field
+        // with redacted version of the prompt
+        const userPrompt = {
+          id: uuidv4(),
+          user: user?.profile?.first_name || "User",
+        };
+        addToMessages(userPrompt);
+
+        // Clean the prompt/input and set loading to true
+        setLocalState((prev) => ({ ...prev, prompt: "", loading: true }));
+
+        // prompt when submitting to the API
+        const response = await submitData({
+          ...userPrompt,
+          prompt: localState.prompt,
         });
 
         const data = await response.json();
+
         if (response.status !== 200) {
           throw (
             data.error ||
@@ -45,49 +96,42 @@ const Chat = () => {
           );
         }
 
-        setLoading(false);
-        setMessages((prev) => [
-          ...prev,
-          { id: uuidv4(), user: "System", message: data?.result },
-        ]);
+        processResponse(data);
       } catch (error) {
-        setLoading(false);
         console.error(error);
       }
+      setLocalState((prev) => ({ ...prev, loading: false }));
     }
   };
+
+  // We scroll to the bottom of the messages
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [localState.messages]);
 
   return (
     <main className={styles.main}>
       <div className={styles.messages}>
-        {messages.map((message) => (
-          <div
-            className={`${styles.message} ${
-              message.user === "System" ? styles.system : ""
-            }`}
-            key={message.id}
-          >
-            <div className={styles.messageuser}>{message.user}:</div>
-            <div className={styles.messagecontent}>{message.message}</div>
-          </div>
+        {localState.messages.map((msg) => (
+          <MessageRow key={msg.id} message={msg} />
         ))}
-        {loading && (
-          <div className={`${styles.message} ${styles.system}`} key="loader">
-            <div className={styles.messageuser}>System:</div>
-            <div className={styles.messagecontent}>
-              <BeatLoader color="#666" size={4} speedMultiplier={0.5} />
-            </div>
-          </div>
-        )}
+        <div ref={messagesEndRef} />
       </div>
       <div className={styles["user-prompt"]}>
         <input
           type="text"
-          placeholder="Enter user prompt"
-          value={prompt}
+          placeholder={
+            localState.loading
+              ? "PLEASE WAIT FOR THE PREVIOUS REQUEST TO COMPLETE"
+              : "Enter a prompt"
+          }
+          value={localState.prompt}
           className={styles.entryBox}
-          onChange={(e) => setPrompt(e.target.value)}
+          onChange={(e) =>
+            setLocalState((prev) => ({ ...prev, prompt: e.target.value }))
+          }
           onKeyDown={handleKeyDown}
+          style={{ backgroundColor: localState.loading ? "#eee" : "#fff" }}
         />
       </div>
       <div className={styles["user-prompt"]}>

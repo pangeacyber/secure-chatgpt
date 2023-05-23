@@ -12,6 +12,10 @@ const shouldAudit = process.env.OPTIONS_AUDIT_USER_PROMPTS === "true";
 const shouldThreatAnalyse =
   process.env.OPTIONS_THREAT_ANALYSE_SERVICE_RESPONSES === "true";
 
+  const SOURCE = "pangea-secure-chatgpt";
+  const TARGET_MODEL = "text-davinci-003";
+  const ACTION = "openai_generate";
+
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
@@ -19,7 +23,7 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 
 // return true or false based on the reputation service response
-const containsMalicious = async (url) => {
+const isMalicious = async (url) => {
   const urlIntelResponse = await urlIntel.reputation(url, {
     provider: "crowdstrike",
   });
@@ -50,14 +54,16 @@ const handler = async (req: NextRequestWithAuth) => {
   const actor = req.__userSession?.tokenDetails?.email || userID;
 
   const body = await req.json();
-  const prompt = body?.prompt || "";
+  const prompt = body?.prompt?.trim() || "";
+  const prompt_id = body?.prompt_id || "";
 
-  if (prompt.trim().length === 0) {
+  if (prompt.length === 0) {
     return new Response("Please enter a valid prompt", { status: 400 });
   }
 
   try {
-    let processedPrompt = prompt.trim();
+    // we start with the original prompt and update it based on the options
+    let processedPrompt = prompt;
 
     // We should redact the user prompt before sending it to OpenAI
     if (shouldRedact) {
@@ -65,46 +71,50 @@ const handler = async (req: NextRequestWithAuth) => {
       processedPrompt = redactResponse?.result?.redacted_text || "";
     }
 
+    // We should audit the user prompt in redacted format
     if (shouldAudit) {
       const auditData = {
-        action: "openai_generate",
+        action: ACTION,
         actor: actor,
         message: processedPrompt,
-        source: "pangea-secure-chatgpt",
-        target: "text-davinci-003",
+        source: SOURCE,
+        target: TARGET_MODEL,
       };
 
       await audit.log(auditData);
     }
 
+    // Call OpenAI API with the processed prompt
     const completion = await openai.createCompletion({
-      model: "text-davinci-003",
+      model: TARGET_MODEL,
       prompt: processedPrompt,
       temperature: 0.7,
       max_tokens: getAvailableTokens(processedPrompt),
     });
 
-    const serviceResponse = completion.data?.choices?.[0]?.text || "";
+    let sanitizedResponse = completion.data?.choices?.[0]?.text || "";
 
-    let sanitizedResponse = serviceResponse;
+    const maliciousURLs = [];
 
+    // We should process the OpenAI response thru the reputation services
+    // We currently check URL reputation and domain reputation
     if (shouldThreatAnalyse) {
-      const urls = extractURLs(serviceResponse) || [];
+      const urls = extractURLs(sanitizedResponse) || [];
       // De-fang all the malicious URLs and domains
       for (let i = 0; i < urls.length; i++) {
         const url = urls[i];
-
-        if (await containsMalicious(url)) {
-          sanitizedResponse = sanitizedResponse.replaceAll(
-            url,
-            `${url.replace("http", "hxxp")} <MALICIOUS>`
-          );
+        if (await isMalicious(url)) {
+          const defangedURL = url.replace("http", "hxxp");
+          maliciousURLs.push(defangedURL);
+          sanitizedResponse = sanitizedResponse.replaceAll(url, defangedURL);
         }
       }
     }
 
+    const responseData = { prompt: processedPrompt, prompt_id, result: sanitizedResponse, maliciousURLs };
+
     return new Response(
-      JSON.stringify({ prompt: processedPrompt, result: sanitizedResponse }),
+      JSON.stringify(responseData),
       {
         headers: { "content-type": "application/json" },
       }
