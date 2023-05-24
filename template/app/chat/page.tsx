@@ -9,6 +9,7 @@ import MessageRow from "../../components/MessageRow";
 const initialState = {
   prompt: "",
   loading: false,
+  promptLoading: false,
   messages: [],
 };
 
@@ -22,10 +23,12 @@ const Chat = () => {
 
   // Append the list with the given message
   const addToMessages = (message) => {
-    setLocalState((prev) => ({
-      ...prev,
-      messages: [...prev.messages, message],
-    }));
+    setLocalState((prev) => {
+      return {
+        ...prev,
+        messages: [...prev.messages, message],
+      };
+    });
   };
 
   // Update the message with the given ID with the given content
@@ -44,13 +47,14 @@ const Chat = () => {
     }));
   };
 
-  const processResponse = (data) => {
-    updateMessagePrompt(data?.prompt_id, data?.prompt);
-    addToMessages({
-      id: uuidv4(),
-      user: "System",
-      message: data?.result,
-      maliciousURLs: data?.maliciousURLs,
+  const redactData = async (msg) => {
+    return await fetch("/api/redact", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ prompt: msg.prompt, prompt_id: msg.id }),
     });
   };
 
@@ -69,38 +73,49 @@ const Chat = () => {
     if (e.key === "Enter" && !localState.loading) {
       e.preventDefault();
       try {
-        // Omitting message here so we show a loading ellipsis
-        // When we receive the response, we will populate the message field
-        // with redacted version of the prompt
-        const userPrompt = {
-          id: uuidv4(),
-          user: user?.profile?.first_name || "User",
-        };
-        addToMessages(userPrompt);
-
         // Clean the prompt/input and set loading to true
         setLocalState((prev) => ({ ...prev, prompt: "", loading: true }));
 
-        // prompt when submitting to the API
-        const response = await submitData({
-          ...userPrompt,
+        // Omitting message here so we show a loading ellipsis
+        // When we receive the response, we will populate the message field
+        // with redacted version of the prompt
+        const id = uuidv4();
+        const userPrompt = {
+          id,
+          user: user?.profile?.first_name || "User",
+        };
+
+        addToMessages(userPrompt);
+
+        // Call the redact function
+        const redactResponse = await redactData({
           prompt: localState.prompt,
         });
 
-        const data = await response.json();
+        const redactedData = await redactResponse.json();
 
-        if (response.status !== 200) {
-          throw (
-            data.error ||
-            new Error(`Request failed with status ${response.status}`)
-          );
-        }
+        // Update the message with the redacted prompt
+        updateMessagePrompt(id, redactedData?.prompt);
 
-        processResponse(data);
+        // prompt when submitting to the API
+        setLocalState((prev) => ({ ...prev, promptLoading: true }));
+        const promptResponse = await submitData({
+          ...userPrompt,
+          prompt: redactedData?.prompt,
+        });
+
+        const promptData = await promptResponse.json();
+
+        addToMessages({
+          id: uuidv4(),
+          user: "System",
+          message: promptData?.result,
+          maliciousURLs: promptData?.maliciousURLs,
+        });
       } catch (error) {
         console.error(error);
       }
-      setLocalState((prev) => ({ ...prev, loading: false }));
+      setLocalState((prev) => ({ ...prev, loading: false, promptLoading: false }));
     }
   };
 
@@ -112,9 +127,14 @@ const Chat = () => {
   return (
     <main className={styles.main}>
       <div className={styles.messages}>
-        {localState.messages.map((msg) => (
-          <MessageRow key={msg.id} message={msg} />
-        ))}
+        <>
+          {localState.messages.map((msg) => (
+            <MessageRow key={msg.id} message={msg} />
+          ))}
+          {localState.promptLoading && (
+            <MessageRow key="loader" message={{ user: "System" }} />
+          )}
+        </>
         <div ref={messagesEndRef} />
       </div>
       <div className={styles["user-prompt"]}>
@@ -131,7 +151,9 @@ const Chat = () => {
             setLocalState((prev) => ({ ...prev, prompt: e.target.value }))
           }
           onKeyDown={handleKeyDown}
-          style={{ backgroundColor: localState.loading ? "#eee" : "#fff" }}
+          style={{
+            backgroundColor: localState.loading ? "#eee" : "#fff",
+          }}
         />
       </div>
       <div className={styles["user-prompt"]}>

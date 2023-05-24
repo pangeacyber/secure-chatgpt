@@ -5,16 +5,15 @@ import {
   withAPIAuthentication,
 } from "../../../../utils";
 import { Configuration, OpenAIApi } from "openai";
-import { audit, redact, domainIntel, urlIntel } from "../../../../utils/pangea";
+import { audit, domainIntel, urlIntel } from "../../../../utils/pangea";
 
-const shouldRedact = process.env.OPTIONS_REDACT_USER_PROMPTS === "true";
 const shouldAudit = process.env.OPTIONS_AUDIT_USER_PROMPTS === "true";
 const shouldThreatAnalyse =
   process.env.OPTIONS_THREAT_ANALYSE_SERVICE_RESPONSES === "true";
 
-  const SOURCE = "pangea-secure-chatgpt";
-  const TARGET_MODEL = "text-davinci-003";
-  const ACTION = "openai_generate";
+const SOURCE = "pangea-secure-chatgpt";
+const TARGET_MODEL = "text-davinci-003";
+const ACTION = "openai_generate";
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
@@ -62,14 +61,10 @@ const handler = async (req: NextRequestWithAuth) => {
   }
 
   try {
+    const promises = [];
+
     // we start with the original prompt and update it based on the options
     let processedPrompt = prompt;
-
-    // We should redact the user prompt before sending it to OpenAI
-    if (shouldRedact) {
-      const redactResponse = await redact.redact(processedPrompt);
-      processedPrompt = redactResponse?.result?.redacted_text || "";
-    }
 
     // We should audit the user prompt in redacted format
     if (shouldAudit) {
@@ -81,18 +76,32 @@ const handler = async (req: NextRequestWithAuth) => {
         target: TARGET_MODEL,
       };
 
-      await audit.log(auditData);
+      promises.push(audit.log(auditData));
     }
 
     // Call OpenAI API with the processed prompt
-    const completion = await openai.createCompletion({
+    const completionData = {
       model: TARGET_MODEL,
       prompt: processedPrompt,
       temperature: 0.7,
       max_tokens: getAvailableTokens(processedPrompt),
-    });
+    };
 
-    let sanitizedResponse = completion.data?.choices?.[0]?.text || "";
+    promises.push(openai.createCompletion(completionData));
+
+    const results = await Promise.allSettled(promises);
+
+    let auditResults;
+    let completionResults;
+
+    if (results.length > 1) {
+      auditResults = results[0]?.value;
+      completionResults = results[1]?.value;
+    } else {
+      completionResults = results[0];
+    }
+
+    let sanitizedResponse = completionResults.data?.choices?.[0]?.text || "";
 
     const maliciousURLs = [];
 
@@ -111,14 +120,16 @@ const handler = async (req: NextRequestWithAuth) => {
       }
     }
 
-    const responseData = { prompt: processedPrompt, prompt_id, result: sanitizedResponse, maliciousURLs };
+    const responseData = {
+      prompt: processedPrompt,
+      prompt_id,
+      result: sanitizedResponse,
+      maliciousURLs,
+    };
 
-    return new Response(
-      JSON.stringify(responseData),
-      {
-        headers: { "content-type": "application/json" },
-      }
-    );
+    return new Response(JSON.stringify(responseData), {
+      headers: { "content-type": "application/json" },
+    });
   } catch (error) {
     if (error.response) {
       console.error(error.response.status, error.response.data);
