@@ -28,13 +28,15 @@ In order to run this application you are going to need:
 1. Create and sign in to your [Pangea account](https://console.pangea.cloud/)
 
 2. Once your land on the Pangea User Console, You can see AuthN, Secure Audit Log, Redact, IP Intel, and Domain Intel on the left. Note that the Domain is shown on the right and will be needed when we run the application.
-![Pangea User Console with services hihglighted](./assets/PUC.png)
+<img src="./assets/PUC.png" width="700" >
 
 3. Select **AuthN** to enable and begin the token creation process. While creating the token, you can enable it for all the services we are going to require for this application: AuthN, Redact, IP Intel, Secure Audit Log, and Domain Intel.
-![Pangea Token Creation](./assets/TokensServices.png)
+
+<img src="./assets/TokensServices.png" width="700" >
 
 4. Landing on the **AuthN Service Overview** page you'll see all the token information you will need from Pangea to run the appliction. Copy these values into a note pad or keep this page open
-![AuthN Service Tokens](./assets/AuthNTokens.png)
+
+<img src="./assets/AuthNTokens.png" width="700" >
 
 5. Go to the **Redirects** tab and add http://localhost:3000` to the redirect list.
 
