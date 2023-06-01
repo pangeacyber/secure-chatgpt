@@ -9,6 +9,10 @@ We are using the following Pangea services:
 - **Audit Service**: To audit the user prompts
 - **Reputation/Threat Intel services**: To detect and neutralize the malicious URLs and domain names in the OPENAI API's responses. 
 
+For more in depth information please go to our blog about [protecting PII from ChatGPT models](https://pangea.cloud/docs/blog/trusting-gpt-protecting-apps-from-pii-leakage)
+
+If you would like to see a demo of this application, go to [this youtube video](https://bit.ly/ChatGPTAppVideo)
+
 # Setup
 
 ## Pre Reqs Check
