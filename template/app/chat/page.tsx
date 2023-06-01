@@ -191,9 +191,7 @@ const Chat = () => {
           }}
         />
       </div>
-      <div className={styles["user-prompt"]}>
-        Some large and serious disclaimer goes here!
-      </div>
+      <div className={styles["user-prompt"]}>&lt;disclaimer&gt;</div>
     </main>
   );
 };
