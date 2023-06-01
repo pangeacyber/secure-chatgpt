@@ -1,8 +1,6 @@
-import Keywords from "react-keywords";
+import Highlighter from "react-highlight-words";
 import BeatLoader from "react-spinners/BeatLoader";
 import styles from "../app/page.module.css";
-
-const DEFANGVALUE = "hxxp";
 
 const MessageRow = ({ message }) => {
   const highlight = (txt) => (
@@ -19,9 +17,15 @@ const MessageRow = ({ message }) => {
       <div className={styles.messageuser}>{message.user}:</div>
       <div className={styles.messagecontent}>
         {message.message ? (
-          <Keywords value={DEFANGVALUE} color="red" render={highlight}>
-            {message.message}
-          </Keywords>
+          <Highlighter
+            highlightStyle={{
+              color: "red",
+              backgroundColor: "transparent",
+            }}
+            searchWords={["hxxp", "hxxps", "fxp"]}
+            autoEscape={true}
+            textToHighlight={message.message}
+          />
         ) : (
           <BeatLoader color="#666" size={4} speedMultiplier={0.5} />
         )}

@@ -87,35 +87,70 @@ const Chat = () => {
 
         addToMessages(userPrompt);
 
+        let redactedData = { prompt: localState.prompt };
+
         // Call the redact function
         const redactResponse = await redactData({
           prompt: localState.prompt,
         });
 
-        const redactedData = await redactResponse.json();
+        if (redactResponse.status !== 200) {
+          const errorContent = await redactResponse.text();
+          console.error(errorContent, redactResponse.status);
+          addToMessages({
+            id: uuidv4(),
+            user: "System",
+            message: `${errorContent} | Status: ${redactResponse.status}`,
+            maliciousURLs: [],
+          });
+        } else {
+          redactedData = await redactResponse.json();
+          // Update the message with the redacted prompt
+          updateMessagePrompt(id, redactedData?.prompt);
 
-        // Update the message with the redacted prompt
-        updateMessagePrompt(id, redactedData?.prompt);
+          // Add the prompt when submitting to the API
+          setLocalState((prev) => ({ ...prev, promptLoading: true }));
 
-        // prompt when submitting to the API
-        setLocalState((prev) => ({ ...prev, promptLoading: true }));
-        const promptResponse = await submitData({
-          ...userPrompt,
-          prompt: redactedData?.prompt,
-        });
+          const promptResponse = await submitData({
+            ...userPrompt,
+            prompt: redactedData?.prompt,
+          });
 
-        const promptData = await promptResponse.json();
-
+          let promptData;
+          if (promptResponse.status === 200) {
+            promptData = await promptResponse.json();
+            addToMessages({
+              id: uuidv4(),
+              user: "System",
+              message: promptData?.result,
+              maliciousURLs: promptData?.maliciousURLs,
+            });
+          } else {
+            const errorContent = await promptResponse.text();
+            console.error(errorContent, promptResponse.status);
+            addToMessages({
+              id: uuidv4(),
+              user: "System",
+              message: `${errorContent} | Status: ${promptResponse.status}`,
+              maliciousURLs: [],
+            });
+          }
+        }
+      } catch (error) {
+        // Add the error as a message so users can see it
         addToMessages({
           id: uuidv4(),
           user: "System",
-          message: promptData?.result,
-          maliciousURLs: promptData?.maliciousURLs,
+          message: error.message || "Something went wrong",
+          maliciousURLs: [],
         });
-      } catch (error) {
-        console.error(error);
+      } finally {
+        setLocalState((prev) => ({
+          ...prev,
+          loading: false,
+          promptLoading: false,
+        }));
       }
-      setLocalState((prev) => ({ ...prev, loading: false, promptLoading: false }));
     }
   };
 

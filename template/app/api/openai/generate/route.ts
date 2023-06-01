@@ -108,18 +108,24 @@ const handler = async (req: NextRequestWithAuth) => {
     // We should process the OpenAI response thru the reputation services
     // We currently check URL reputation and domain reputation
     if (shouldThreatAnalyse) {
-      const urls = extractURLs(sanitizedResponse) || [];
-      // De-fang all the malicious URLs and domains
-      for (let i = 0; i < urls.length; i++) {
-        const url = urls[i];
-        if (await isMalicious(url)) {
-          const defangedURL = url.replace("http", "hxxp");
-          maliciousURLs.push(defangedURL);
-          sanitizedResponse = sanitizedResponse.replaceAll(url, defangedURL);
+      try {
+        const urls = extractURLs(sanitizedResponse) || [];
+        // De-fang all the malicious URLs and domains
+        for (let i = 0; i < urls.length; i++) {
+          const url = urls[i];
+          if (await isMalicious(url)) {
+            let defangedURL = url.replace("https://", "hxxps://");
+            defangedURL = defangedURL.replace("http://", "hxxp://");
+            defangedURL = defangedURL.replace("ftp://", "fxp://");
+            maliciousURLs.push(defangedURL);
+            sanitizedResponse = sanitizedResponse.replaceAll(url, defangedURL);
+          }
         }
+      } catch (errTA) {
+        console.error(`Error occured during threat analysis, and content was not analyzed: ${errTA.message}`);
       }
     }
-
+    
     const responseData = {
       prompt: processedPrompt,
       prompt_id,
