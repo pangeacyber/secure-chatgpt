@@ -81,10 +81,7 @@ const AppBar = () => {
           </>
         )}
         {!authenticated && (
-          <button
-            className={styles["header-action"]}
-            onClick={() => login("redirect_uri")}
-          >
+          <button className={styles["header-action"]} onClick={() => login()}>
             Sign In
           </button>
         )}
