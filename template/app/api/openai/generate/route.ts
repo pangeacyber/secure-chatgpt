@@ -91,23 +91,23 @@ const handler = async (req: NextRequestWithAuth) => {
 
     const results = await Promise.allSettled(promises);
 
-    let auditResults;
     let completionResults;
 
     if (results.length > 1) {
-      auditResults = results[0]?.value;
-      completionResults = results[1]?.value;
+      completionResults =
+        results[1].status === "fulfilled" ? results[1]?.value : undefined;
     } else {
-      completionResults = results[0];
+      completionResults =
+        results[0].status === "fulfilled" ? results[0]?.value : undefined;
     }
 
-    let sanitizedResponse = completionResults.data?.choices?.[0]?.text || "";
+    let sanitizedResponse = completionResults?.data?.choices?.[0]?.text || "";
 
     const maliciousURLs = [];
 
     // We should process the OpenAI response thru the reputation services
     // We currently check URL reputation and domain reputation
-    if (shouldThreatAnalyse) {
+    if (shouldThreatAnalyse && !!sanitizedResponse) {
       try {
         const urls = extractURLs(sanitizedResponse) || [];
         // De-fang all the malicious URLs and domains
@@ -122,10 +122,12 @@ const handler = async (req: NextRequestWithAuth) => {
           }
         }
       } catch (errTA) {
-        console.error(`Error occured during threat analysis, and content was not analyzed: ${errTA.message}`);
+        console.error(
+          `Error occured during threat analysis, and content was not analyzed: ${errTA.message}`
+        );
       }
     }
-    
+
     const responseData = {
       prompt: processedPrompt,
       prompt_id,
@@ -143,7 +145,7 @@ const handler = async (req: NextRequestWithAuth) => {
         status: 400,
       });
     } else {
-      console.error(`Error with OpenAI API request: ${error.message}`);
+      console.error(`Error with OpenAI API request: ${error}`);
       return new Response("An error occurred during your request.", {
         status: 500,
       });
