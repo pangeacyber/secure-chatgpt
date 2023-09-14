@@ -1,6 +1,6 @@
 {
   "name": "create-secure-chatgpt-app",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Create Pangea-powered secure OpenAI apps with a single command",
   "keywords": [
     "secure",
