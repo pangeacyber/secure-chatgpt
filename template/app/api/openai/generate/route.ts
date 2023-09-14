@@ -4,7 +4,7 @@ import {
   getAvailableTokens,
   withAPIAuthentication,
 } from "../../../../utils";
-import { Configuration, OpenAIApi } from "openai";
+import { OpenAI } from "openai";
 import { audit, domainIntel, urlIntel } from "../../../../utils/pangea";
 
 const shouldAudit = process.env.OPTIONS_AUDIT_USER_PROMPTS === "true";
@@ -15,11 +15,9 @@ const SOURCE = "pangea-secure-chatgpt";
 const TARGET_MODEL = "text-davinci-003";
 const ACTION = "openai_generate";
 
-const configuration = new Configuration({
+const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
-
-const openai = new OpenAIApi(configuration);
 
 // return true or false based on the reputation service response
 const isMalicious = async (url) => {
@@ -43,7 +41,7 @@ const isMalicious = async (url) => {
 };
 
 const handler = async (req: NextRequestWithAuth) => {
-  if (!configuration.apiKey) {
+  if (!process.env.OPENAI_API_KEY) {
     return new Response("The service cannot communicate with OpenAI", {
       status: 500,
     });
@@ -87,21 +85,43 @@ const handler = async (req: NextRequestWithAuth) => {
       max_tokens: getAvailableTokens(processedPrompt),
     };
 
-    promises.push(openai.createCompletion(completionData));
+    promises.push(openai.completions.create(completionData));
 
     const results = await Promise.allSettled(promises);
 
     let completionResults;
 
     if (results.length > 1) {
-      completionResults =
-        results[1].status === "fulfilled" ? results[1]?.value : undefined;
+      completionResults = results[1];
     } else {
       completionResults =
         results[0].status === "fulfilled" ? results[0]?.value : undefined;
     }
 
-    let sanitizedResponse = completionResults?.data?.choices?.[0]?.text || "";
+    // Uncomment to debug the response from OpenAI
+    // console.log("COMPLETION:", completionResults.status);
+
+    // We haven't received a successfull from OpenAI
+    if (completionResults.status !== "fulfilled") {
+      return new Response(
+        completionResults?.reason?.response?.statusText ||
+          "The request was rejected by OpenAI API",
+        {
+          status: parseInt(completionResults?.reason?.response?.status) || 500,
+        }
+      );
+    }
+
+    let sanitizedResponse = completionResults?.value?.choices?.[0]?.text;
+
+    // If we don't have a valid text then respond to the client with error
+    if (!sanitizedResponse) {
+      // log this error
+      console.error("completiong results: ", completionResults?.value);
+      return new Response("An error occurred during your request", {
+        status: 500,
+      });
+    }
 
     const maliciousURLs = [];
 

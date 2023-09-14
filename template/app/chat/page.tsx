@@ -21,6 +21,8 @@ const Chat = () => {
 
   const token = getToken();
 
+  const basePath = process.env.__NEXT_ROUTER_BASEPATH || "";
+
   // Append the list with the given message
   const addToMessages = (message) => {
     setLocalState((prev) => {
@@ -48,7 +50,7 @@ const Chat = () => {
   };
 
   const redactData = async (msg) => {
-    return await fetch("/api/redact", {
+    return await fetch(`${basePath}/api/redact`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -59,7 +61,7 @@ const Chat = () => {
   };
 
   const submitData = async (msg) => {
-    return await fetch("/api/openai/generate", {
+    return await fetch(`${basePath}/api/openai/generate`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

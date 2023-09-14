@@ -15,9 +15,11 @@ const AppBar = () => {
   const { authenticated, getToken, login, logout } = useAuth();
   const token = authenticated ? getToken() : "";
 
+  const basePath = process.env.__NEXT_ROUTER_BASEPATH || "";
+
   const getServerSettings = async () => {
     try {
-      const response = await fetch("/api/openai/settings", {
+      const response = await fetch(`${basePath}/api/openai/settings`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
@@ -79,7 +81,10 @@ const AppBar = () => {
           </>
         )}
         {!authenticated && (
-          <button className={styles["header-action"]} onClick={() => login()}>
+          <button
+            className={styles["header-action"]}
+            onClick={() => login("redirect_uri")}
+          >
             Sign In
           </button>
         )}

@@ -28,11 +28,18 @@ export default function RootLayout({
       </html>
     );
   }
+
+  const basePath = process.env.__NEXT_ROUTER_BASEPATH || "";
+
   return (
     <html lang="en">
       <head />
       <body>
-        <AuthProvider loginUrl={hostedLoginURL} config={authConfig}>
+        <AuthProvider
+          loginUrl={hostedLoginURL}
+          config={authConfig}
+          redirectPathname={basePath}
+        >
           <div className="container">
             <AppBar />
             <div className="content">{children}</div>
