@@ -89,16 +89,13 @@ const handler = async (req: NextRequestWithAuth) => {
 
     const results = await Promise.allSettled(promises);
 
-    let auditResults;
     let completionResults;
 
     if (results.length > 1) {
-      // We can do something with the audit results
-      auditResults =
-        results[0]?.status === "fulfilled" ? results[0]?.value : null;
       completionResults = results[1];
     } else {
-      completionResults = results[0];
+      completionResults =
+        results[0].status === "fulfilled" ? results[0]?.value : undefined;
     }
 
     // Uncomment to debug the response from OpenAI
@@ -130,7 +127,7 @@ const handler = async (req: NextRequestWithAuth) => {
 
     // We should process the OpenAI response thru the reputation services
     // We currently check URL reputation and domain reputation
-    if (shouldThreatAnalyse) {
+    if (shouldThreatAnalyse && !!sanitizedResponse) {
       try {
         const urls = extractURLs(sanitizedResponse) || [];
         // De-fang all the malicious URLs and domains
@@ -168,7 +165,7 @@ const handler = async (req: NextRequestWithAuth) => {
         status: 400,
       });
     } else {
-      console.error(`Error with OpenAI API request: ${error.message}`);
+      console.error(`Error with OpenAI API request: ${error}`);
       return new Response("An error occurred during your request.", {
         status: 500,
       });
