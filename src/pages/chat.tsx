@@ -1,5 +1,3 @@
-'use client';
- 
 import { nanoid } from 'ai'
 import { Chat } from '@/components/chat'
 import { useCompletion } from 'ai/react';
@@ -13,50 +11,27 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
  
 export default function Completion() {
-  // const {
-  //   completion,
-  //   input,
-  //   stop,
-  //   isLoading,
-  //   handleInputChange,
-  //   handleSubmit,
-  // } = useCompletion({
-  //   api: '/api/chat',
-  // });
 
   const id = nanoid()
   const {authenticated, login, logout, user} = useAuth()
   const router = useRouter();
 
-  useEffect(() => {
+  // if(!authenticated) {
+  //   router.push('/')
+  // } else {
     console.log(authenticated)
     console.log(user)
-    // if(!authenticated) {
-    //   router.push('/')
-    // }
-  }, [])
+  // }
+
+  useEffect(() => {
+    console.log(authenticated);
+  }, [authenticated])
  
   return (
+    <>
+    {authenticated ? (
       <NextThemesProvider>
           <TooltipProvider>
-        {/* <form onSubmit={handleSubmit}>
-          <label>
-            Say something...
-            <input
-              className="fixed w-full max-w-md bottom-0 border border-gray-300 rounded mb-8 shadow-xl p-2"
-              value={input}
-              onChange={handleInputChange}
-            />
-          </label>
-          <output>Completion result: {completion}</output>
-          <button type="button" onClick={stop}>
-            Stop
-          </button>
-          <button disabled={isLoading} type="submit">
-            Send
-          </button>
-        </form> */}
-
               <Providers attribute="class" defaultTheme="system" enableSystem>
                   <div className="flex flex-col min-h-screen">
                   <main className="flex flex-col flex-1 bg-muted/50">
@@ -67,5 +42,9 @@ export default function Completion() {
               </Providers>
           </TooltipProvider>
       </NextThemesProvider>
+    ): (
+      <></>
+    )}
+    </>
     )
 }
