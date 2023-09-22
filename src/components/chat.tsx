@@ -20,14 +20,16 @@ import { useState } from 'react'
 import { Button } from './ui/button'
 import { Input } from './ui/input'
 import { toast } from 'react-hot-toast'
+import axios from 'axios'
 
 const IS_PREVIEW = process.env.VERCEL_ENV === 'preview'
 export interface ChatProps extends React.ComponentProps<'div'> {
   initialMessages?: Message[]
   id?: string
+  user?: Object
 }
 
-export function Chat({ id, initialMessages, className }: ChatProps) {
+export function Chat({ id, user, initialMessages, className }: ChatProps) {
   const [previewToken, setPreviewToken] = useLocalStorage<string | null>(
     'ai-token',
     null
@@ -46,6 +48,14 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
         if (response.status === 401) {
           toast.error(response.statusText)
         }
+      },
+      async onFinish(message) {
+        await axios.post('/api/audit-log', {
+          'user_id': 'openai',
+          'session_id': id,
+          message: message.content,
+          actor: message.role
+        })
       }
     })
   return (
@@ -62,6 +72,7 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
       </div>
       <ChatPanel
         id={id}
+        user={user}
         isLoading={isLoading}
         stop={stop}
         append={append}

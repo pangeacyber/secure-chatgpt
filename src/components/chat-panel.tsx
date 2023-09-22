@@ -5,6 +5,7 @@ import { PromptForm } from '@/components/prompt-form'
 import { ButtonScrollToBottom } from '@/components/button-scroll-to-bottom'
 import { IconRefresh, IconStop } from '@/components/ui/icons'
 import { FooterText } from '@/components/footer'
+import axios from 'axios';
 
 export interface ChatPanelProps
   extends Pick<
@@ -18,10 +19,12 @@ export interface ChatPanelProps
     | 'setInput'
   > {
   id?: string
+  user?: Object
 }
 
 export function ChatPanel({
   id,
+  user,
   isLoading,
   stop,
   append,
@@ -60,9 +63,20 @@ export function ChatPanel({
         <div className="space-y-4 border-t bg-background px-4 py-2 shadow-lg sm:rounded-t-xl sm:border md:py-4">
           <PromptForm
             onSubmit={async value => {
+              await axios.post('/api/audit-log', {
+                message: value,
+                user_id: (user as any).email as string,
+                session_id: id,
+                actor: 'user'
+              })
+
+              const redactedText = await axios.post('/api/redact', {
+                message: value
+              })
+
               await append({
                 id,
-                content: value,
+                content: redactedText.data.message,
                 role: 'user'
               })
             }}

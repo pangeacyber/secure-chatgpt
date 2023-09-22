@@ -92,7 +92,7 @@ function IconPangeaOpenAI({ className, ...props }: React.ComponentProps<'svg'>) 
   return (
     <img src="/pangea-openai.svg"
     className={cn('h-8 w-8', className)}
-    {...props} />
+    id={props.id} />
   )
 }
 

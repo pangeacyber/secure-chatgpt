@@ -8,14 +8,14 @@ import AuthScreen from '@/components/ui/AuthScreen';
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
-  const { authenticated, login } = useAuth();
+  const { user, authenticated, login } = useAuth();
   const router = useRouter();
   
   useEffect(() => {
     if(authenticated) {
       router.push('/chat')
     }
-  }, [])
+  }, [user, authenticated])
 
   return (
     <AuthScreen login={login} />

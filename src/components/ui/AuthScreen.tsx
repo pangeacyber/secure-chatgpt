@@ -1,7 +1,7 @@
 // AuthScreen.js
 import React from 'react';
 
-const AuthScreen = ({login} : any) => {
+const AuthScreen = ({login}: any) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-80 z-50">
       <div className="bg-white p-8 rounded-lg shadow-lg text-center">

@@ -16,16 +16,12 @@ export default function Completion() {
   const {authenticated, login, logout, user} = useAuth()
   const router = useRouter();
 
-  // if(!authenticated) {
-  //   router.push('/')
-  // } else {
-    console.log(authenticated)
-    console.log(user)
-  // }
 
   useEffect(() => {
-    console.log(authenticated);
-  }, [authenticated])
+    if(!authenticated) {
+      router.push('/')
+    }
+  }, [user, authenticated])
  
   return (
     <>
@@ -36,7 +32,7 @@ export default function Completion() {
                   <div className="flex flex-col min-h-screen">
                   <main className="flex flex-col flex-1 bg-muted/50">
                       {/* <Header /> */}
-                      <Chat id={id} />
+                      <Chat id={id} user={user} />
                   </main>
                   </div>
               </Providers>
