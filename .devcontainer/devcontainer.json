@@ -1,4 +1,4 @@
 {
     "image":"mcr.microsoft.com/devcontainers/universal:2",
-    "postCreateCommand": "sudo chown -R $USER:$USER /usr/local/bin/; curl -L -o /usr/local/bin/pangea \"https://github.com/pangeacyber/pangea-cli/releases/latest/download/pangea-$(uname -s)-$(uname -m)\" && chmod +x /usr/local/bin/pangea"
+    "postCreateCommand": "sudo chown -R $USER:$USER /usr/local/bin/; curl -L -o /usr/local/bin/pangea \"https://github.com/pangeacyber/pangea-cli/releases/latest/download/pangea-$(uname -s)-$(uname -m)\" && chmod +x /usr/local/bin/pangea; npm install"
 }
