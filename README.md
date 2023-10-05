@@ -2,6 +2,15 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 # Getting Started
 
+  * [Pre Reqs Check](#pre-reqs-check)
+  * [OpenAI API Key](#openai-api-key)
+  * [Enable Pangea Services](#enable-pangea-services)
+  * [First Run](#first-run)
+  * [Migrate Secrets to Pangea CLI](#migrate-secrets-to-pangea-cli)
+  * [Learn More](#learn-more)
+  * [Deploy on Vercel](#deploy-on-vercel)
+
+
 ## Pre Reqs Check
 In order to run this application you are going to need: 
  - Node
@@ -10,12 +19,17 @@ In order to run this application you are going to need:
 
 ## OpenAI API Key
 1. Create an account to sign in to [OpenAI](https://openai.com)
+<img src="./assets/open_ai_login.png" width="600" >
+
 2. Once signed in, [this link](https://platform.openai.com/account/api-keys) will begin the flow to create an API Token.
+<img src="./assets/create_new_token.png" width="600" >
 3. Name your token.
 4. Copy the API Key and save it somewhere. We will not be able to access it again.
+<img src="./assets/copy_openai_secret.png" width="600" >
 
 ## Enable Pangea Services
 1. Create and sign into your [Pangea account](https://console.pangea.cloud/)
+<img src="./assets/pangea_login.png" width="600" >
 
 2. Once you land on the Pangea User Console, You can see AuthN, Secure Audit Log, Redact, and Vault on the left.
    
