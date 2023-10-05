@@ -1,8 +1,48 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+# Getting Started
 
-First, run the development server:
+## Pre Reqs Check
+In order to run this application you are going to need: 
+ - Node
+ - OpenAI
+ - Pangea Account
+
+## OpenAI API Key
+1. Create an account to sign in to [OpenAI](https://openai.com)
+2. Once signed in, [this link](https://platform.openai.com/account/api-keys) will begin the flow to create an API Token.
+3. Name your token.
+4. Copy the API Key and save it somewhere. We will not be able to access it again.
+
+## Enable Pangea Services
+1. Create and sign into your [Pangea account](https://console.pangea.cloud/)
+
+2. Once you land on the Pangea User Console, You can see AuthN, Secure Audit Log, Redact, and Vault on the left.
+   
+3.  Select **AuthN** to enable and begin the token creation process. While creating the token, you can enable it for all the services we are going to require for this application: AuthN, Redact, Secure Audit Log, and Vault.
+
+4. Landing on the **AuthN Service Overview** page you'll see all the token information you will need from Pangea to run the application. Copy these values into a note pad or keep this page open.
+
+5. Go to the Redirects tab and add the necessary redirect. If running this in codespace, it's the url of your codespace running instance. 
+If running this app locally, add http://localhost:3000 to the redirect list.
+
+> NOTE: By going to **Customize > View project branding**, you'll be able to customize your login page
+
+6. Go to back to the **Main Menu** and then navigate to **Redact > Rulesets**. This is where you will be able to configure what gets redacted and how. For the demo, it's recommended that we enable redaction for:
+    - PII: email address and phone number
+    - US Identification Numbers: US Social Security Number
+
+
+## First Run
+
+1. Copy the appropriate values into the .env file.
+    - OPEN AI API Token
+    - Pangea Service Token
+    - Pangea Domain
+    - Pangea AuthN Client Token
+    - Pangea Hosted Login URL
+
+2. First, run the development server:
 
 ```bash
 npm run dev
@@ -21,6 +61,33 @@ You can start editing the page by modifying `pages/index.tsx`. The page auto-upd
 The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+
+## Migrate Secrets to Pangea CLI
+If you wanted to get rid of the .env code, we can leverage the Pangea CLI to migrate the secrets to the Pangea Vault. Then when we run the application, the we will pull down the appropriate secrets from the Pangea Vault.
+
+For the full documentation please go the the [Pangea CLI github](https://github.com/pangeacyber/pangea-cli)
+
+Step 1 is to login to the Pangea CLI
+
+ ```
+pangea login –no-browser
+```
+
+Next we create a folder within the Vault to hold our application's secrets
+```
+pangea create​
+```
+
+Then we migrate the secrets in our .env file to the new folder in the Pangea Vault
+```
+pangea migrate -f .env​
+```
+
+Now in order to run the application, we add 'pangea run -c' before the command in order to pull down the secret values.
+```
+pangea run -c npm run dev
+```
+
 
 ## Learn More
 
