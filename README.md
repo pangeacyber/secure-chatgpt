@@ -49,6 +49,14 @@ If running this app locally, add http://localhost:3000 to the redirect list.
     - PII: email address and phone number
     - US Identification Numbers: US Social Security Number
 
+7. Enable **Secure Audit Log** with the following configuration
+    - session_id: Short or Long String
+    - timestamp: Timestamp
+    - actor: Short or Long String
+    - user_id: Long String
+    - message: Long String
+
+> NOTE: You find find this configured in src>lib>auditLog.ts
 
 ## First Run
 
@@ -80,7 +88,7 @@ The `pages/api` directory is mapped to `/api/*`. Files in this directory are tre
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
 ## Migrate Secrets to Pangea CLI
-If you wanted to get rid of the .env code, we can leverage the Pangea CLI to migrate the secrets to the Pangea Vault. Then when we run the application, the we will pull down the appropriate secrets from the Pangea Vault.
+If you wanted to get rid of the .env code, we can leverage the Pangea CLI to migrate the secrets to the Pangea Vault. Then when we run the application, the we will pull down the appropriate secrets from the Pangea Vault. Remember to **enable Vault** in your Pangea User Console.
 
 For the full documentation please go the the [Pangea CLI github](https://github.com/pangeacyber/pangea-cli)
 
