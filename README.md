@@ -18,17 +18,7 @@ In order to run this application you are going to need:
  - Pangea Account
 
 ## OpenAI API Key
-<!--- 1. Create an account to sign in to [OpenAI](https://openai.com)
-<img src="./assets/open_ai_login.png" width="600" >
-
-2. Once signed in, [this link](https://platform.openai.com/account/api-keys) will begin the flow to create an API Token.
-<img src="./assets/create_new_token.png" width="600" >
-3. Name your token.
-4. Copy the API Key and save it somewhere. We will not be able to access it again.
-<img src="./assets/copy_openai_secret.png" width="600" > -->
- For today's workshop, we  will be using [this Open AI Key](https://gist.github.com/vanpangea/889cd54499f44786e11165d9f26cbdeb)
-
- If you are comforatble using your own credit card, follow these instructions below.
+ If you are comforatble using a credit card, follow these instructions below.
 
  1. Create an account to sign in to [OpenAI](https://openai.com)
 <img src="./assets/open_ai_login.png" width="600" >
