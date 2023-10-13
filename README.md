@@ -7,7 +7,7 @@ We are using the following Pangea services:
 - **Auth Service**: To add authentication to a NextJS App and prevent unauthenticated users from using ChatGPT
 - **Redact Service**: To redact sensitive information from the user's prompt before the entry reaches to OpenAI API
 - **Audit Service**: To audit the user prompts
-- **Reputation/Threat Intel services**: To detect and neutralize the malicious URLs and domain names in the OPENAI API's responses. 
+- **Reputation/Threat Intel services**: To detect and neutralize the malicious URLs and domain names in the OPENAI API's responses.
 
 For more in depth information please go to our blog about [protecting PII from ChatGPT models](https://pangea.cloud/docs/blog/trusting-gpt-protecting-apps-from-pii-leakage)
 
@@ -16,23 +16,26 @@ If you would like to see a demo of this application, go to [this youtube video](
 # Setup
 
 ## Pre Reqs Check
-In order to run this application you are going to need: 
- - Node
- - OpenAI
- - Pangea Account
+
+In order to run this application you are going to need:
+
+- Node
+- OpenAI
+- Pangea Account
 
 ## OpenAI API Key
+
 1. Create an account to sign in to [OpenAI](https://openai.com)
 2. Once signed in, [this link](https://platform.openai.com/account/api-keys) will begin the flow to create an API Token.
 3. Name your token.
-4. Copy the API Key and save it somewhere. We will not be able to access it again. 
-
+4. Copy the API Key and save it somewhere. We will not be able to access it again.
 
 ## Enable Pangea Services
+
 1. Create and sign into your [Pangea account](https://console.pangea.cloud/)
 
 2. Once you land on the Pangea User Console, You can see AuthN, Secure Audit Log, Redact, IP Intel, and Domain Intel on the left. Note that the Domain is shown on the right and will be needed when we run the application.
-<img src="./assets/PUC.png" width="700" >
+   <img src="./assets/PUC.png" width="700" >
 
 3. Select **AuthN** to enable and begin the token creation process. While creating the token, you can enable it for all the services we are going to require for this application: AuthN, Redact, IP Intel, URL Intel, Secure Audit Log, and Domain Intel.
 
@@ -47,11 +50,11 @@ In order to run this application you are going to need:
 > NOTE: By going to **Customize > View project branding**, you'll be able to customize your login page
 
 6. Go to back to the **Main Menu** and then navigate to **Redact > Rulesets**. This is where you will be able to configure what gets redacted and how. For the demo, it's recommended that we enable redaction for:
-    - PII: email address and phone number
-    - US Identification Numbers: US Social Security Number
-
+   - PII: email address and phone number
+   - US Identification Numbers: US Social Security Number
 
 ## Setup App & Run
+
 During the generator script, you will need the following information ready:
 
 - **OpenAI API Key**: If you haven't done so, please head over to the OpenAI site and register a user and get an API Key for using OpenAI services https://platform.openai.com/account/api-keys
@@ -64,10 +67,10 @@ Now that you have the necessary information to go through the setup
 1. Run the following command, and enter the required information when you are prompted.
 
 ```
-    npx create-secure-chatgpt-app
+    npx create-secure-chatgpt-app@latest
 ```
-2. Input the appropriate token values
 
+2. Input the appropriate token values
 
 3. Now you can `cd` into the newly generated app directory and run
 
@@ -75,8 +78,8 @@ Now that you have the necessary information to go through the setup
     npm run dev
 ```
 
-4. If everything went well, you should be able to open a browser and navigate to 
+4. If everything went well, you should be able to open a browser and navigate to
 
 ```
 http://localhost:3000
-``` 
+```
