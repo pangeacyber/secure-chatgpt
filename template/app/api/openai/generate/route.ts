@@ -21,21 +21,25 @@ const openai = new OpenAI({
 
 // return true or false based on the reputation service response
 const isMalicious = async (url) => {
-  const urlIntelResponse = await urlIntel.reputation(url, {
-    provider: "crowdstrike",
-  });
+  try {
+    const urlIntelResponse = await urlIntel.reputation(url, {
+      provider: "crowdstrike",
+    });
 
-  const domain = new URL(url).hostname.replace("www.", "");
-  const domainIntelResponse = await domainIntel.reputation(domain, {
-    provider: "crowdstrike",
-  });
+    const domain = new URL(url).hostname.replace("www.", "");
+    const domainIntelResponse = await domainIntel.reputation(domain, {
+      provider: "crowdstrike",
+    });
 
-  // If it is malicious, we should redact it
-  if (
-    urlIntelResponse?.result?.data?.verdict === "malicious" ||
-    domainIntelResponse?.result?.data?.verdict === "malicious"
-  ) {
-    return true;
+    // If it is malicious, we should redact it
+    if (
+      urlIntelResponse?.result?.data?.verdict === "malicious" ||
+      domainIntelResponse?.result?.data?.verdict === "malicious"
+    ) {
+      return true;
+    }
+  } catch (err) {
+    console.error(err);
   }
   return false;
 };

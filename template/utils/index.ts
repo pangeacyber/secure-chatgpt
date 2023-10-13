@@ -19,7 +19,7 @@ export const getBearerToken = (req: Request) => {
 
 export const getTokenDetails = async (token: string) => {
   if (token) {
-    const SERVICEURL = `https://authn.${process.env.NEXT_PUBLIC_PANGEA_DOMAIN}/v1/client/token/check`;
+    const SERVICEURL = `https://authn.${process.env.NEXT_PUBLIC_PANGEA_DOMAIN}/v2/client/token/check`;
     try {
       const response = await fetch(SERVICEURL, {
         method: "POST",
