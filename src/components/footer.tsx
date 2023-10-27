@@ -14,8 +14,8 @@ export function FooterText({ className, ...props }: React.ComponentProps<'p'>) {
     >
       Open source AI chatbot built with{' '}
       <ExternalLink href="https://nextjs.org">Next.js</ExternalLink> and{' '}
-      <ExternalLink href="https://vercel.com/storage/kv">
-        Vercel KV
+      <ExternalLink href="https://pangea.cloud/?utm_source=demos&utm_medium=footer&utm_campaign=secure-chatgpt">
+        Pangea
       </ExternalLink>
       .
     </p>
