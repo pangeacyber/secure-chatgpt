@@ -1,0 +1,7 @@
+{
+    "editor.insertSpaces": false,
+	"files.trimTrailingWhitespace": true,
+    "workbench.editorAssociations":     {
+        "*.md": "vscode.markdown.preview.editor"
+    }
+}
