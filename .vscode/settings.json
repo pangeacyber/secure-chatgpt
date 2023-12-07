@@ -3,5 +3,6 @@
 	"files.trimTrailingWhitespace": true,
     "workbench.editorAssociations":     {
         "*.md": "vscode.markdown.preview.editor"
-    }
+    },
+    "markdown.extension.preview.autoShowPreviewToSide": true
 }
