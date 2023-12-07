@@ -1,4 +1,25 @@
 {
-    "image":"mcr.microsoft.com/devcontainers/universal:2",
-    "postCreateCommand": "sudo chown -R $USER:$USER /usr/local/bin/; curl -L -o /usr/local/bin/pangea \"https://github.com/pangeacyber/pangea-cli/releases/latest/download/pangea-$(uname -s)-$(uname -m)\" && chmod +x /usr/local/bin/pangea; npm install"
-}
+    "image": "mcr.microsoft.com/devcontainers/universal:2",
+    "hostRequirements": {
+      "cpus": 4
+    },
+    "waitFor": "onCreateCommand",
+    "postCreateCommand": "sudo chown -R $USER:$USER /usr/local/bin/; curl -L -o /usr/local/bin/pangea \"https://github.com/pangeacyber/pangea-cli/releases/latest/download/pangea-$(uname -s)-$(uname -m)\" && chmod +x /usr/local/bin/pangea; npm install",
+    "postAttachCommand": {
+      "server": "npm run dev"
+    },
+    "customizations": {
+      "codespaces": {
+        "openFiles": [
+          "README.md"
+        ]
+      }
+    },
+    "portsAttributes": {
+      "3000": {
+        "label": "Application",
+        "onAutoForward": "openPreview"
+      }
+    },
+    "forwardPorts": [3000]
+  }
