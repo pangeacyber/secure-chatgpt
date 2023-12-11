@@ -30,7 +30,7 @@ In order to run this application you are going to need:
 <img src="./assets/copy_openai_secret.png" width="600" >
 
 ## Enable Pangea Services
-1. Create and sign into your [Pangea account](https://console.pangea.cloud/)
+1. Create and sign into your [Pangea account](https://l.pangea.cloud/SecurechatgptRepo)
 <img src="./assets/pangea_login.png" width="600" >
 
 2. Once you land on the Pangea User Console, You can see AuthN, Secure Audit Log, Redact, and Vault on the left.
