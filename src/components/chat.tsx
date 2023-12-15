@@ -47,6 +47,7 @@ export function Chat({ id, user, logout, initialMessages, className }: ChatProps
         id,
         previewToken
       },
+      api: "/api/chat/aws-bedrock",
       onResponse(response) {
         if (response.status === 401) {
           toast.error(response.statusText)

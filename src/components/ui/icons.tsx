@@ -90,7 +90,7 @@ function IconNextChat({
 
 function IconPangeaOpenAI({ className, ...props }: React.ComponentProps<'svg'>) {
   return (
-    <img src="/pangea-openai.svg"
+    <img src="/pangea-bedrock.svg"
     className={cn('h-8 w-8', className)}
     id={props.id} />
   )

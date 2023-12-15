@@ -96,7 +96,7 @@ export function ChatPanel({
                   } else {
                     toast({
                       title: "Error: Unable to send Pangea Requests",
-                      description: "Please reach out on the Pangea.cloud slack if the error persists"
+                      description: "Please reach out on the pangea.cloud slack if the error persists"
                     })
                   }
                 })
@@ -116,11 +116,11 @@ export function ChatPanel({
                   } else {
                     toast({
                       title: "Error: Unable to send Pangea Requests",
-                      description: "Please reach out on the Pangea.cloud slack if the error persists"
+                      description: "Please reach out on the pangea.cloud slack if the error persists"
                     })
                   }
                 })
-                
+
                 outputMessage = redactedText?.data.message;
 
               } else {

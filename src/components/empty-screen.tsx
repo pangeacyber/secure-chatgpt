@@ -9,7 +9,7 @@ const exampleMessages = [
   {
     heading: 'Securely sumarize a patient record in a hospital',
     message: `Summarize the following patient records into a paragraph to suggest which type of doctor to forward the patient to.
-    
+
     Patient Record:
 
     \`\`\`
@@ -28,16 +28,16 @@ const exampleMessages = [
     Emergency Contact: Jane Doe
     Emergency Contact Relationship: Wife
     Emergency Contact Number: (309) 230-4798
-    
+
     Medical History:
     - Asthma (Chronic): Diagnosed in 1998
     - High Blood Pressure: Diagnosed in 2008
     - Broken Arm (Right): Healed in 2010
-    
+
     Current Medications:
     - Ventolin (Asthma) - 2 puffs twice a day
     - Lisinopril (Blood Pressure) - 1 tablet daily
-    
+
     Last Visit Date: 2021-11-12
     Visit Reason: Regular Check-up
     Doctor's Note: Patient's blood pressure higher than usual. Advised to decrease salt intake and monitor blood pressure at home.
@@ -48,44 +48,44 @@ const exampleMessages = [
     heading: 'Ask it to lookup a revenue stats from credit card transaction history',
     message: `
     What is our total revenue for 2024
-    
+
     \`\`\`
-    1. Transaction ID: 001 
-    User Email: testuser1@gmail.com 
-    User Phone: +1-213-555-0123 
-    Credit Card Type: Visa 
-    Credit Card Number: 4123456789101112 
-    Credit Card Expiry: 02/24 
+    1. Transaction ID: 001
+    User Email: testuser1@gmail.com
+    User Phone: +1-213-555-0123
+    Credit Card Type: Visa
+    Credit Card Number: 4123456789101112
+    Credit Card Expiry: 02/24
     Amount: $100.00
-    Transaction Status: Success 
+    Transaction Status: Success
     Stripe Payment ID: ch_1JhZ0VGPR4hFd2H65ed3fg87
- 
-    2. Transaction ID: 002 
-    User Email: testuser2@hotmail.com 
-    User Phone: +1-213-555-0456 
-    Credit Card Type: MasterCard 
+
+    2. Transaction ID: 002
+    User Email: testuser2@hotmail.com
+    User Phone: +1-213-555-0456
+    Credit Card Type: MasterCard
     Credit Card Number: 5123456789101113
-    Credit Card Expiry: 01/23 
+    Credit Card Expiry: 01/23
     Amount: $250.00
-    Transaction Status: Failure - Insufficient funds 
+    Transaction Status: Failure - Insufficient funds
     Stripe Payment ID: ch_1JhXVPGR4hFd2H624hh7kl89
-    
+
     3. Transaction ID: 003
-    User Email: jonnycache@gmail.com 
-    User Phone: +1-222-555-1111 
-    Credit Card Type: Visa 
-    Credit Card Number: 4123456789101112 
-    Credit Card Expiry: 05/24 
+    User Email: jonnycache@gmail.com
+    User Phone: +1-222-555-1111
+    Credit Card Type: Visa
+    Credit Card Number: 4123456789101112
+    Credit Card Expiry: 05/24
     Amount: $200.00
-    Transaction Status: Success 
+    Transaction Status: Success
     Stripe Payment ID: ch_1JhZ0VGPR4DDsdDSeddsfj3
 
     4. Transaction ID: 004
-    User Email: bagels@hotmail.com 
-    User Phone: +1-213-555-0456 
-    Credit Card Type: MasterCard 
+    User Email: bagels@hotmail.com
+    User Phone: +1-213-555-0456
+    Credit Card Type: MasterCard
     Credit Card Number: 5123456789101113
-    Credit Card Expiry: 03/24 
+    Credit Card Expiry: 03/24
     Amount: $250.00
     Transaction Status: Success
     Stripe Payment ID: ch_1JhXVPGR4hFd2H624hh7kl89
@@ -138,14 +138,23 @@ export function EmptyScreen({ setInput }: Pick<UseChatHelpers, 'setInput'>) {
     <div className="mx-auto max-w-2xl px-4">
       <div className="rounded-lg border bg-background p-8">
         <h1 className="mb-2 text-lg font-semibold">
-          Welcome to Secure ChatGPT!
+          Welcome to Secure {process.env.NEXT_PUBLIC_CHOOSE_CHATBOT == "bedrock-llama" ? "Llama Chat 🦙" : "ChatGPT!"}
         </h1>
         <p className="mb-2 leading-normal text-muted-foreground">
-          This is an open source AI chatbot app template built with{' '}
-          <ExternalLink href="https://nextjs.org">Next.js</ExternalLink> and{' '}
-          <ExternalLink href="https://pangea.cloud">
-            Pangea
-          </ExternalLink>
+          This is an open source AI chatbot app template built with 💜 using {' '}
+      <ExternalLink href="https://nextjs.org">Next.js</ExternalLink>, {' '}
+      <ExternalLink href="https://pangea.cloud/?utm_source=demos&utm_medium=footer&utm_campaign=secure-chatgpt">
+        Pangea
+      </ExternalLink> and {' '}
+      {process.env.NEXT_PUBLIC_CHOOSE_CHATBOT == "bedrock-llama" ?
+        <ExternalLink href="https://aws.amazon.com/bedrock/?ref=pangea.cloud">
+          AWS Bedrock
+        </ExternalLink>
+        :
+        <ExternalLink href="https://openai.com/?ref=pangea.cloud">
+          OpenAI
+        </ExternalLink>
+      }
           .
         </p>
         <p className="leading-normal text-muted-foreground">
