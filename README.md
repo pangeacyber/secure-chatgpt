@@ -1,6 +1,15 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Secure ChatGPT
+## Overview
+This app simulates the chatGPT experience with additional security features. It uses Pangea's robust set of security APIs such as:
+- [PII redaction](https://pangea.cloud/services/redact?utm_source=github&utm_medium=secure-chagpt) of the user prompts
+- [Audit logging](https://pangea.cloud/services/secure-audit-log?utm_source=github&utm_medium=secure-chagpt) the user prompts in their redacted form
+- [Authentication](https://pangea.cloud/services/authn/?utm_source=github&utm_medium=secure-chagpt) to access the ChatGPT dashboard to prevent malicious actors
 
-# Getting Started
+We also use OpenAI's advanced ChatGPT API to create a more secure version of the familiar chatGPT experience.
+
+This codebase was built using [NextJS's ChatBot template](https://github.com/vercel/ai-chatbot?ref=pangea.cloud), [Pangea's APIs](https://pangea.cloud/?utm_source=github&utm_medium=secure-chagpt), and [Open AI's GPT API](https://openai.com/product?ref=pangea.cloud).
+
+## Getting Started
 
   * [Pre Reqs Check](#pre-reqs-check)
   * [OpenAI API Key](#openai-api-key)
