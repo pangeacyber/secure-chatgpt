@@ -27,7 +27,7 @@
     "@vercel/analytics": "^1.2.2",
     "@vercel/kv": "^1.0.1",
     "@vercel/og": "^0.6.2",
-    "ai": "^2.2.12",
+    "ai": "^2.2.37",
     "autoprefixer": "10.4.17",
     "axios": "^1.6.7",
     "class-variance-authority": "^0.7.0",
