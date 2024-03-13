@@ -23,7 +23,7 @@
     "@radix-ui/react-tooltip": "^1.0.7",
     "@types/node": "20.11.26",
     "@types/react": "18.2.65",
-    "@types/react-dom": "18.2.21",
+    "@types/react-dom": "18.2.22",
     "@vercel/analytics": "^1.2.2",
     "@vercel/kv": "^1.0.1",
     "@vercel/og": "^0.6.2",
