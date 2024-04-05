@@ -10,7 +10,7 @@ export default async function auditLog({
 }: any) {
   if(process.env.PANGEA_TOKEN) {
     const token = process.env.PANGEA_TOKEN as string;
-    const config = new PangeaConfig({ domain: process.env.PANGEA_DOMAIN });
+    const config = new PangeaConfig({ domain: process.env.PANGEA_DOMAIN, configID: "pci_q4iiwm7ikiitdddjhmyap42elgqterom" });
     const audit = new AuditService(token, config);
 
     const data = {

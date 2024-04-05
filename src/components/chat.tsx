@@ -56,7 +56,7 @@ export function Chat({ id, user, logout, initialMessages, className }: ChatProps
       async onFinish(message) {
         if (auditLogStatus) {
           await axios.post('/api/audit-log', {
-            'user_id': 'openai',
+            'user_id': 'bedrock',
             'session_id': id,
             message: message.content,
             actor: message.role
