@@ -193,7 +193,7 @@ export function EmptyScreen({ setInput }: Pick<UseChatHelpers, 'setInput'>) {
             <Button
               key={index}
               variant="link"
-              className="h-auto p-0 text-base text-white"
+              className="h-auto p-0 text-base text-muted-foreground"
               onClick={() => setInput(message.message)}
             >
               <IconArrowRight className="mr-2 text-muted-foreground" />
@@ -201,7 +201,7 @@ export function EmptyScreen({ setInput }: Pick<UseChatHelpers, 'setInput'>) {
             </Button>
           ))}
         </div>
-        <p className="mt-4text-md font-semibold">
+        <p className="mt-4text-md font-semibold dark:text-muted-foreground">
           Prompt Hacking Templates ⚔️
         </p>
         <div className="mt-4 flex flex-col items-start space-y-2">
@@ -209,7 +209,7 @@ export function EmptyScreen({ setInput }: Pick<UseChatHelpers, 'setInput'>) {
             <Button
               key={index}
               variant="link"
-              className="h-auto p-0 text-base text-white"
+              className="h-auto p-0 text-base dark:text-muted-foreground"
               onClick={() => setInput(message.message)}
             >
               <IconArrowRight className="mr-2 text-muted-foreground" />
