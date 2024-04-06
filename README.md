@@ -11,8 +11,9 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
   * [Deploy on Vercel](#deploy-on-vercel)
 
 
+
 ## Pre Reqs Check
-In order to run this application you are going to need: 
+In order to run this application you are going to need:
  - Node
  - OpenAI
  - Pangea Account
@@ -34,14 +35,14 @@ In order to run this application you are going to need:
 <img src="./assets/pangea_login.png" width="600" >
 
 2. Once you land on the Pangea User Console, You can see AuthN, Secure Audit Log, Redact, and Vault on the left.
-   
+
 3.  Select **AuthN** to enable and begin the token creation process. While creating the token, you can enable it for all the services we are going to require for this application: AuthN, Redact, Secure Audit Log, and Vault.
 <img src="./assets/authN_token.png" width="600" >
 
 4. Landing on the **AuthN Service Overview** page you'll see all the token information you will need from Pangea to run the application. Copy these values into a note pad or keep this page open.
 
-5. Go to the Redirects tab and add the necessary redirect. If running this in codespace, it's the url of your codespace running instance. 
-If running this app locally, add http://localhost:3000 to the redirect list. This is also go to a good time to go to General Settings and decide what methods of Login or MFA you need for your application. On first run it is reccomended to do this in a bare bones way. 
+5. Go to the Redirects tab and add the necessary redirect. If running this in codespace, it's the url of your codespace running instance.
+If running this app locally, add http://localhost:3000 to the redirect list. This is also go to a good time to go to General Settings and decide what methods of Login or MFA you need for your application. On first run it is reccomended to do this in a bare bones way.
 <img src="./assets/redirect.png" width="600" >
 
 
