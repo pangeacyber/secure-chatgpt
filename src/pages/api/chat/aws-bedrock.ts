@@ -13,17 +13,17 @@ export default async function POST(req: Request) {
 	const { messages } = await req.json();
 
 	const bedrockClient = new BedrockRuntimeClient({
-	  region: process.env.AWS_REGION ?? '',
+	  region: process.env.AWS_BEDROCK_REGION ?? '',
 	  credentials: {
-		accessKeyId: process.env.AWS_ACCESS_KEY_ID ?? '',
-		secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY ?? '',
+		accessKeyId: process.env.AWS_BEDROCK_ACCESS_KEY_ID ?? '',
+		secretAccessKey: process.env.AWS_BEDROCK_SECRET_ACCESS_KEY ?? '',
 	  },
 	});
 
 	// Ask Claude for a streaming chat completion given the prompt
 	const bedrockResponse = await bedrockClient.send(
 	  new InvokeModelWithResponseStreamCommand({
-		modelId: 'meta.llama2-70b-chat-v1',
+		modelId: 'meta.llama2-13b-chat-v1',
 		contentType: 'application/json',
 		accept: 'application/json',
 		body: JSON.stringify({

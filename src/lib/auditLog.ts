@@ -10,15 +10,15 @@ export default async function auditLog({
 }: any) {
   if(process.env.PANGEA_TOKEN) {
     const token = process.env.PANGEA_TOKEN as string;
-    const config = new PangeaConfig({ domain: process.env.PANGEA_DOMAIN, configID: "pci_q4iiwm7ikiitdddjhmyap42elgqterom" });
+    const config = new PangeaConfig(process.env.PANGEA_AUDIT_CONFIG_ID != "" ? { domain: process.env.PANGEA_DOMAIN, configID: process.env.PANGEA_AUDIT_CONFIG_ID } :  { domain: process.env.PANGEA_DOMAIN });
     const audit = new AuditService(token, config);
 
     const data = {
       "message": message,
-      "actor": actor,
-      "user_id": user_id,
+      "action": `${actor} sent a message`,
+      "actor": user_id,
       "timestamp": new Date(Date.now()).toISOString(),
-      "session_id": session_id
+      "source": session_id
     };
 
     try {

@@ -54,7 +54,7 @@ const exampleMessages = [
     User Email: testuser1@gmail.com
     User Phone: +1-213-555-0123
     Credit Card Type: Visa
-    Credit Card Number: 4123456789101112
+    Credit Card Number: 4242424242424242
     Credit Card Expiry: 02/24
     Amount: $100.00
     Transaction Status: Success
@@ -64,7 +64,7 @@ const exampleMessages = [
     User Email: testuser2@hotmail.com
     User Phone: +1-213-555-0456
     Credit Card Type: MasterCard
-    Credit Card Number: 5123456789101113
+    Credit Card Number: 5555-5555-5555-4444
     Credit Card Expiry: 01/23
     Amount: $250.00
     Transaction Status: Failure - Insufficient funds
@@ -73,8 +73,8 @@ const exampleMessages = [
     3. Transaction ID: 003
     User Email: jonnycache@gmail.com
     User Phone: +1-222-555-1111
-    Credit Card Type: Visa
-    Credit Card Number: 4123456789101112
+    Credit Card Type: American Express
+    Credit Card Number: 378282246310005
     Credit Card Expiry: 05/24
     Amount: $200.00
     Transaction Status: Success
@@ -84,7 +84,7 @@ const exampleMessages = [
     User Email: bagels@hotmail.com
     User Phone: +1-213-555-0456
     Credit Card Type: MasterCard
-    Credit Card Number: 5123456789101113
+    Credit Card Number: 5200 8282 8282 8210
     Credit Card Expiry: 03/24
     Amount: $250.00
     Transaction Status: Success

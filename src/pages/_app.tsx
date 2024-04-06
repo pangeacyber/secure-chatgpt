@@ -10,7 +10,7 @@ export default function App({ Component, pageProps }: AppProps) {
   };
 
   return (
-    <AuthProvider config={authConfig} loginUrl={hostedLoginURL}>
+    <AuthProvider config={authConfig} redirectPathname='/chat' loginUrl={hostedLoginURL}>
       <Component {...pageProps} />
     </AuthProvider>
   )
