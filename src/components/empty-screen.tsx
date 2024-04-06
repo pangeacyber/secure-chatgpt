@@ -193,7 +193,7 @@ export function EmptyScreen({ setInput }: Pick<UseChatHelpers, 'setInput'>) {
             <Button
               key={index}
               variant="link"
-              className="h-auto p-0 text-base text-muted-foreground"
+              className="h-auto p-0 text-base dark:text-muted-foreground"
               onClick={() => setInput(message.message)}
             >
               <IconArrowRight className="mr-2 text-muted-foreground" />
