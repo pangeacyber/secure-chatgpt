@@ -28,9 +28,10 @@ export interface ChatProps extends React.ComponentProps<'div'> {
   id?: string
   user?: Object
   logout?: any
+  getToken: () => string | undefined
 }
 
-export function Chat({ id, user, logout, initialMessages, className }: ChatProps) {
+export function Chat({ id, user, logout, initialMessages, getToken, className }: ChatProps) {
   const [redactStatus, setRedactStatus] = useState(false);
   const [auditLogStatus, setAuditLogStatus] = useState(false);
   const [previewToken, setPreviewToken] = useLocalStorage<string | null>(
@@ -47,11 +48,17 @@ export function Chat({ id, user, logout, initialMessages, className }: ChatProps
         id,
         previewToken
       },
-      api: "/api/chat/aws-bedrock",
+      api: "https://chatrock-proxy-pangea.vercel.app/api/chat",
+      headers: {
+        "Authorization": "Bearer " + getToken()
+      },
       onResponse(response) {
         if (response.status === 401) {
           toast.error(response.statusText)
         }
+      },
+      onError(error) {
+        toast.error(error.message);
       },
       async onFinish(message) {
         if (auditLogStatus) {

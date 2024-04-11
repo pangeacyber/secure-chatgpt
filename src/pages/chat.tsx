@@ -10,11 +10,11 @@ import AuthScreen from '@/components/ui/AuthScreen';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { Toaster } from "@/components/ui/toaster"
- 
+
 export default function Completion() {
 
   const id = nanoid()
-  const {authenticated, error, logout, loading, user} = useAuth()
+  const {authenticated, error, logout, loading, user, getToken} = useAuth()
   const router = useRouter();
 
 
@@ -23,8 +23,8 @@ export default function Completion() {
     if (!loading && !error && !authenticated) {
       router.push("/");
     }
-  }, [error, authenticated, loading]);  
- 
+  }, [error, authenticated, loading]);
+
   return (
     <>
     {authenticated ? (
@@ -34,7 +34,7 @@ export default function Completion() {
                   <div className="flex flex-col min-h-screen">
                   <main className="flex flex-col flex-1 bg-muted/50">
                       {/* <Header /> */}
-                      <Chat id={id} user={user} logout={logout} />
+                      <Chat id={id} user={user} logout={logout} getToken={getToken} />
                   </main>
                   </div>
                   <Toaster />
