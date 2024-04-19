@@ -152,12 +152,12 @@ export function ChatPanel({
               <Label htmlFor="airplane-mode">Audit Log</Label>
             </div>
 
-            <div>
+            {/* <div>
               <button className='bg-red-500 p-2 text-sm rounded-md' onClick={async () => {
                 await logout();
                 window.location.reload();
               }}>Logout</button>
-            </div>
+            </div> */}
           </div>
           <FooterText className="hidden sm:block" />
         </div>

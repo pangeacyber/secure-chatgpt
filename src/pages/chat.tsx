@@ -6,15 +6,16 @@ import { TooltipProvider } from '@/components/ui/tooltip';
 import { Providers } from '@/components/providers'
 import { Header } from '@/components/header'
 import { useAuth } from '@pangeacyber/react-auth';
-import AuthScreen from '@/components/ui/AuthScreen';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { Toaster } from "@/components/ui/toaster"
- 
+
 export default function Completion() {
 
   const id = nanoid()
-  const {authenticated, error, logout, loading, user} = useAuth()
+  // const {authenticated, error, logout, loading, user} = useAuth()
+  // By passing pangea authN for development environment. Configure AuthN for production deployments!
+  const {authenticated, error, logout, loading, user} = {authenticated: true, error: null, logout: null, loading: false, user: {name: "Pango", email: "info@pangea.cloud"}}
   const router = useRouter();
 
 
@@ -23,8 +24,8 @@ export default function Completion() {
     if (!loading && !error && !authenticated) {
       router.push("/");
     }
-  }, [error, authenticated, loading]);  
- 
+  }, [error, authenticated, loading]);
+
   return (
     <>
     {authenticated ? (

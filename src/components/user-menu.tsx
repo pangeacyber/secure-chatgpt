@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import { useAuth } from '@pangeacyber/react-auth'
+// import { useAuth } from '@pangeacyber/react-auth'
 
 import { Button } from '@/components/ui/button'
 import {

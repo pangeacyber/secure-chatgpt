@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 import { cn } from '@/lib/utils'
 // import { auth } from '@/auth'
-import { useAuth } from '@pangeacyber/react-auth'
+// import { useAuth } from '@pangeacyber/react-auth'
 // import { clearChats } from '@/app/actions'
 import { Button, buttonVariants } from '@/components/ui/button'
 import { Sidebar } from '@/components/sidebar'
