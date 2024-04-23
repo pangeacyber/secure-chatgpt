@@ -5,7 +5,7 @@ import { ThemeProvider as NextThemesProvider } from 'next-themes'
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { Providers } from '@/components/providers'
 import { Header } from '@/components/header'
-import { useAuth } from '@pangeacyber/react-auth';
+// import { useAuth } from '@pangeacyber/react-auth';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { Toaster } from "@/components/ui/toaster"
