@@ -56,6 +56,6 @@
     "typescript": "5.4.5"
   },
   "devDependencies": {
-    "@types/react-syntax-highlighter": "^15.5.11"
+    "@types/react-syntax-highlighter": "^15.5.13"
   }
 }
