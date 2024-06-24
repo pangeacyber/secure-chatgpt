@@ -38,7 +38,7 @@
     "focus-trap-react": "^10.2.3",
     "next": "14.2.4",
     "next-themes": "^0.3.0",
-    "openai": "4.51.0",
+    "openai": "4.52.0",
     "pangea-node-sdk": "^3.9.0",
     "postcss": "8.4.38",
     "react": "18.3.1",
