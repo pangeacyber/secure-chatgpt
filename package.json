@@ -30,7 +30,7 @@
     "@vercel/og": "^0.6.2",
     "ai": "3.2.43",
     "autoprefixer": "10.4.19",
-    "axios": "^1.7.2",
+    "axios": "^1.7.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "eslint": "8.57.0",
