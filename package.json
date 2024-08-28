@@ -10,7 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@pangeacyber/react-auth": "^0.0.13",
+    "@pangeacyber/react-auth": "^0.0.14",
     "@radix-ui/react-alert-dialog": "^1.1.1",
     "@radix-ui/react-dialog": "^1.1.1",
     "@radix-ui/react-dropdown-menu": "^2.1.1",
