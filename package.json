@@ -36,7 +36,7 @@
     "eslint": "8.57.0",
     "eslint-config-next": "14.2.9",
     "focus-trap-react": "^10.2.3",
-    "next": "14.2.8",
+    "next": "14.2.9",
     "next-themes": "^0.3.0",
     "openai": "4.58.2",
     "pangea-node-sdk": "^3.11.0",
