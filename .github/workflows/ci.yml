@@ -21,7 +21,7 @@ permissions:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.ref_name != 'main' }}
 
 env:
   NEXT_TELEMETRY_DISABLED: 1
