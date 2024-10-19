@@ -2,13 +2,14 @@
 // @see https://github.com/mckaywrigley/chatbot-ui/blob/main/components/Chat/ChatMessage.tsx
 
 import { Message } from 'ai'
+import React from 'react'
 import remarkGfm from 'remark-gfm'
 import remarkMath from 'remark-math'
 
 import { cn } from '@/lib/utils'
 import { CodeBlock } from '@/components/ui/codeblock'
 import { MemoizedReactMarkdown } from '@/components/markdown'
-import { IconOpenAI, IconPangeaOpenAI, IconUser } from '@/components/ui/icons'
+import { IconPangeaOpenAI, IconUser } from '@/components/ui/icons'
 import { ChatMessageActions } from '@/components/chat-message-actions'
 
 export interface ChatMessageProps {
@@ -39,20 +40,26 @@ export function ChatMessage({ message, ...props }: ChatMessageProps) {
             p({ children }) {
               return <p className="mb-2 last:mb-0">{children}</p>
             },
-            code({ node, inline, className, children, ...props }) {
-              if (children.length) {
-                if (children[0] == '▍') {
-                  return (
-                    <span className="mt-1 cursor-default animate-pulse">▍</span>
-                  )
-                }
+            code({ node, className, children, ...props }) {
+              const childrenArray = React.Children.toArray(children)
+              const firstChild = childrenArray[0] as React.ReactElement
+              const firstChildAsString = React.isValidElement(firstChild)
+                ? (firstChild as React.ReactElement).props.children
+                : firstChild
 
-                children[0] = (children[0] as string).replace('`▍`', '▍')
+              if (firstChildAsString === '▍') {
+                return (
+                  <span className="mt-1 cursor-default animate-pulse">▍</span>
+                )
+              }
+
+              if (typeof firstChildAsString === "string") {
+                childrenArray[0] = firstChildAsString.replace("`▍`", "▍")
               }
 
               const match = /language-(\w+)/.exec(className || '')
 
-              if (inline) {
+              if (typeof firstChildAsString === "string" && !firstChildAsString.includes("\n")) {
                 return (
                   <code className={className} {...props}>
                     {children}
