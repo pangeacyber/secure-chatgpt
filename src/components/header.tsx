@@ -2,12 +2,9 @@ import * as React from 'react'
 import Link from 'next/link'
 
 import { cn } from '@/lib/utils'
-// import { auth } from '@/auth'
 import { useAuth } from '@pangeacyber/react-auth'
-// import { clearChats } from '@/app/actions'
 import { Button, buttonVariants } from '@/components/ui/button'
 import { Sidebar } from '@/components/sidebar'
-// import { SidebarList } from '@/components/sidebar-list'
 import {
   IconGitHub,
   IconNextChat,
@@ -16,10 +13,8 @@ import {
 } from '@/components/ui/icons'
 import { SidebarFooter } from '@/components/sidebar-footer'
 import { ThemeToggle } from '@/components/theme-toggle'
-import { ClearHistory } from '@/components/clear-history'
-// import { UserMenu } from '@/components/user-menu'
 
-export async function Header() {
+export function Header() {
   const { authenticated, login } = useAuth()
 
   return (
