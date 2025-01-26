@@ -22,7 +22,7 @@
     "@radix-ui/react-switch": "^1.1.2",
     "@radix-ui/react-toast": "^1.2.5",
     "@radix-ui/react-tooltip": "^1.1.7",
-    "@types/node": "22.10.7",
+    "@types/node": "22.10.8",
     "@types/react": "19.0.7",
     "@types/react-dom": "19.0.3",
     "@vercel/analytics": "^1.4.1",
