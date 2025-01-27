@@ -27,7 +27,7 @@
     "@types/react-dom": "19.0.3",
     "@vercel/analytics": "^1.4.1",
     "@vercel/kv": "^3.0.0",
-    "@vercel/og": "^0.6.4",
+    "@vercel/og": "^0.6.5",
     "ai": "4.0.12",
     "autoprefixer": "10.4.20",
     "axios": "^1.7.9",
