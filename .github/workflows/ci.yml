@@ -58,7 +58,7 @@ jobs:
           cache: npm
 
       - name: Next.js cache
-        uses: actions/cache@v4.2.1
+        uses: actions/cache@v4.2.2
         with:
           path: |
             ~/.npm
